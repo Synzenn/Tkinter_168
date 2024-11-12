@@ -1,47 +1,56 @@
 import tkinter as tk
-from tkinter import messagebox
 
-# Fungsi untuk menampilkan hasil prediksi
 def hasil_prediksi():
-    try:
-        # Mengecek setiap input apakah berupa angka
-        for entry in entries:
-            if not entry.get().isdigit():
-                raise ValueError("Semua nilai mata pelajaran harus berupa angka.")
-        
-        # Jika semua input valid, tampilkan hasil prediksi
-        hasil_label.config(text="Prodi: Teknologi Informasi")
-    except ValueError as e:
-        # Menampilkan pesan error jika ada input yang bukan angka
-        messagebox.showerror("Input Error", str(e))
+    # Menulis "Teknologi Informasi" ke dalam label hasil prediksi
+    result_label.config(text="Prodi : Teknologi Informasi")
 
-# Membuat window utama
+# Membuat jendela utama
 root = tk.Tk()
-root.title("Aplikasi Prediksi Prodi Pilihan")
+root.title("Aplikasi Prediksi Prodi Pilihan") # Judul jendela
+root.geometry('800x500')  # Ukuran jendela (lebar x tinggi)
 
-# Label judul
-judul_label = tk.Label(root, text="Aplikasi Prediksi Prodi Pilihan", font=("Arial", 16))
-judul_label.grid(row=0, column=0, columnspan=2, pady=10)
+# Label Judul Aplikasi
+judul_label = tk.Label(root,
+                        text='Prediksi Program Studi', # Teks judul
+                        font=('Arial', '16'), # Font dan ukuran
+                        fg='#007bff') # Warna teks
+judul_label.pack(pady=20)  # Pakai padding atas dan bawah
 
-# Membuat label dan entry untuk 10 nilai mata pelajaran
-entry_labels = []
-entries = []
+# Frame untuk input nilai mata pelajaran
+input_frame = tk.Frame(root) # Membuat frame untuk mengelompokkan input
+input_frame.pack() # Menempatkan frame dalam jendela utama
+
+# Input Nilai Mata Pelajaran
+nilai_labels = [] # Daftar untuk menyimpan label nilai
+nilai_entries = [] # Daftar untuk menyimpan entry nilai
+
 for i in range(10):
-    label = tk.Label(root, text=f"Nilai Mata Pelajaran {i + 1}:")
-    label.grid(row=i + 1, column=0, padx=10, pady=5, sticky="e")
-    entry_labels.append(label)
+    label_nilai = tk.Label(input_frame,
+                            text=f'Nilai {i+1}: ',  # Label untuk setiap nilai
+                            width=15, # Lebar label
+                            anchor=tk.W) # Penjajaran teks ke kiri
+    
+    entry_nilai = tk.Entry(input_frame,
+                            width=5) # Entry untuk memasukkan nilai
+    
+    label_nilai.grid(row=i, column=0) # Menempatkan label dalam grid
+    entry_nilai.grid(row=i, column=1) # Menempatkan entry dalam grid
+    
+    nilai_labels.append(label_nilai) # Menyimpan label ke dalam daftar
+    nilai_entries.append(entry_nilai) # Menyimpan entry ke dalam daftar
 
-    entry = tk.Entry(root)
-    entry.grid(row=i + 1, column=1, padx=10, pady=5)
-    entries.append(entry)
+# Button Bertuliskan Hasil Prediksi 
+button_hasil_prediksi = tk.Button(root,
+                                text='Hasil Prediksi', # Teks tombol
+                                command=lambda: hasil_prediksi()) # Menghubungkan tombol dengan fungsi hasil_prediksi
+button_hasil_prediksi.place(relx=.40, rely=.8) # Menempatkan tombol di posisi relatif
 
-# Button untuk menampilkan hasil prediksi
-prediksi_button = tk.Button(root, text="Hasil Prediksi", command=hasil_prediksi)
-prediksi_button.grid(row=11, column=0, columnspan=2, pady=10)
+# Label Luaran Hasil Prediksi 
+result_label = tk.Label(root,
+                        text='', # Teks awal kosong
+                        font=('Arial', '14'), # Font dan ukuran untuk hasil
+                        fg='#007bff') # Warna teks hasil
+result_label.place(relx=.45, rely=.85) # Menempatkan label hasil di posisi relatif
 
-# Label hasil prediksi
-hasil_label = tk.Label(root, text="", font=("Arial", 14))
-hasil_label.grid(row=12, column=0, columnspan=2, pady=10)
-
-# Menjalankan mainloop
+# Memulai aplikasi Tkinter
 root.mainloop()
